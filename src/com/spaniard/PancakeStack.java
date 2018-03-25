@@ -11,15 +11,18 @@ public class PancakeStack {
 
     private ArrayList<String> originalStack;
     private ArrayList<String> sortedStack;
-    private ArrayList<String> reversedStack;
+    private ArrayList<String> flippedStack;
+    private ArrayList<String> subStack;
+    private ArrayList<String> indexOfBiggestPancake;
+    private List<Object> stackToFlip;
 
 
     // Constructor creates a pancake stack object and initialises the value of the original
     // stack and the sorted stack, i.e. the solution.
     public PancakeStack(){
         getOriginalStack();
-        SortStack();
-        //reverseList();
+        sortStack();
+        //reverseStack();
     }
 
     // Read the second line of text file to gather the original pancake stack and returning to the constructor
@@ -35,33 +38,38 @@ public class PancakeStack {
     }
 
     // Sort arraylist for solution
-    public ArrayList<String> SortStack(){
+    public ArrayList<String> sortStack(){
         sortedStack = new ArrayList<>(originalStack);
         Collections.sort(sortedStack);
         return this.sortedStack;
     }
 
-    public ArrayList<String> reverseList() {
-        reversedStack = new ArrayList<>(originalStack);
-        Collections.sort(this.reversedStack, Collections.reverseOrder());
-        return this.reversedStack;
+    // Flip any stack
+    public ArrayList<String> flipStack(ArrayList<String> stackToFlip) {
+        flippedStack = new ArrayList<>(stackToFlip);
+        Collections.reverse(flippedStack);
+        return this.flippedStack;
     }
 
     // Compare a stack with original stack for equality
     public boolean areStacksEqual(ArrayList<String> listToCompare) {
-        if (listToCompare.equals(originalStack)){
-            return true;
-        }else {
-            return false;
-        }
+        return listToCompare.equals(originalStack);
     }
 
-
-    // Creates sublist from index[0] to index[max], where max is the highest
-    // value
-    public ArrayList<String> identifySublistToFlip() {
-        Collections
-
+    // Creates substack from index[0] to index[max], where max is the highest
+    // value on said list and flips it
+    public ArrayList<String> subStackToLargest(ArrayList<String> subStackToFlip) {
+        String biggestPancake = Collections.max(subStackToFlip); // find largest pancake on stack
+        int sizeOfSubStack = subStackToFlip.size(); // find size of stack
+        int indexOfBiggestPancake = subStackToFlip.indexOf(biggestPancake); //find index of largest pancake on stack
+        if (indexOfBiggestPancake !=  sizeOfSubStack) {
+            ArrayList<String> subStack = new ArrayList<String>(subStackToFlip.subList(0, indexOfBiggestPancake + 1));
+            flipStack(subStack);
+        }else {
+            ArrayList<String> subStack = new ArrayList<String>(subStackToFlip.subList(0, indexOfBiggestPancake));
+            flipStack(subStack);
+        }
+        return this.subStack;
     }
 
     // Compare arrays to get solution
@@ -71,21 +79,14 @@ public class PancakeStack {
         PancakeStack pancakeStack = new PancakeStack();
 
 
-        System.out.println(pancakeStack.originalStack);
+        System.out.println("The original stack is : " + pancakeStack.originalStack);
 
+        System.out.println("The sorted stack is : " + pancakeStack.sortedStack);
 
-        System.out.println(pancakeStack.sortedStack);
+        System.out.println("Flipping the original stack : " + pancakeStack.flipStack(pancakeStack.originalStack));
 
+        System.out.println(pancakeStack.subStackToLargest(pancakeStack.originalStack));
 
-        //System.out.println(pancakeStack.reversedStack);
-
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("1");
-        list.add("3");
-        list.add("5");
-        list.add("4");
-        list.add("2");
-        System.out.println(pancakeStack.areStacksEqual(list));
 
     }
 }
