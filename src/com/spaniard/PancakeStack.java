@@ -11,10 +11,10 @@ public class PancakeStack {
 
     private ArrayList<String> originalStack;
     private ArrayList<String> sortedStack;
-    private ArrayList<String> flippedStack;
     private ArrayList<String> subStack;
     private ArrayList<String> interimStack;
-    private List<Object> stackToFlip;
+    private ArrayList<String> yah;
+    private ArrayList<String> subStack2;
 
 
     // Constructor creates a pancake stack object and initialises the value of the original
@@ -26,7 +26,7 @@ public class PancakeStack {
 
     // Read the second line of text file to gather the original pancake stack and return it to the constructor
     private ArrayList<String> getOriginalStack(){
-        File textFile = new File("/home/ilerma/Projects/PancakeSorter/src/myfile.txt");
+        File textFile = new File("/home/israelconesa/Development/PancakeSorter/src/myfile.txt");
         try {
             String line2 = Files.readAllLines(Paths.get(String.valueOf(textFile))).get(1);
             originalStack = new ArrayList<String>(Arrays.asList(line2.split(" ")));
@@ -44,11 +44,11 @@ public class PancakeStack {
     }
 
     // Flip any stack
-    private ArrayList<String> flipStack(ArrayList<String> stackToFlip) {
-        flippedStack = new ArrayList<>(stackToFlip);
-        Collections.reverse(flippedStack);
-        return this.flippedStack;
-    }
+    //private ArrayList<String> flipStack(ArrayList<String> stackToFlip) {
+      //  flippedStack = new ArrayList<>(stackToFlip);
+       // Collections.reverse(flippedStack);
+      //  return this.flippedStack;
+    //}
 
     // Compare a stack with original stack for equality
     private boolean areStacksEqual(ArrayList<String> listToCompare) {
@@ -72,34 +72,30 @@ public class PancakeStack {
 
             System.out.println("interim stack is now " +interimStack);
 
-            if (!sortedStack.get(i).equals(interimStack.get(i))) {
+            //identify a substack starting from the top and ending on the largest pancake
+            subStack = new ArrayList<String>(interimStack.subList(0, interimStack.indexOf(sortedStack.get(i))+1));
 
-                //identify a substack starting from the top and ending on the largest pancake
-                subStack = new ArrayList<String>(interimStack.subList(0, originalStack.indexOf(Collections.max(interimStack))+1));
+            subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i))+1, interimStack.size()));
 
-//                System.out.println("substack before flipping "+subStack);
+            System.out.println(subStack);
+            System.out.println(subStack2);
 
-                //flip the substack
-                subStack = flipStack(subStack); // bring the biggest pancake to the top
+            //flip the substack
+            Collections.reverse(subStack);
 
-//                System.out.println("substack after flipping "+flippedStack);
+            //update the interim stack with the values of substack after they've been flipped
+            for (int j = 0; j<subStack.size(); j++) {
+                interimStack.set(j, subStack.get(j));
+            }
 
-                //update the interim stack with the values of substack after they've been flipped
-                for (int j = 0; j<subStack.size(); j++) {
+            Collections.reverse(interimStack);
 
-                    interimStack.set(j, subStack.get(j));
-                }
+
+
+
 
                 // bring the biggest pancake to the bottom
-                interimStack = flipStack(interimStack);
-                System.out.println(interimStack + "------");
-
-            }else {
-
-
-
-                //flip the whole interim stack
-            }
+                //interimStack = flipStack(interimStack);
         }
 
     }
