@@ -72,10 +72,12 @@ public class PancakeStack {
 
             System.out.println("interim stack is now " +interimStack);
 
-            if (!sortedStack.get(i).equals(interimStack.get(i))) {
+            //if (!sortedStack.get(i).equals(interimStack.get(i))) {
 
                 //identify a substack starting from the top and ending on the largest pancake
-                subStack = new ArrayList<String>(interimStack.subList(0, originalStack.indexOf(Collections.max(interimStack))+1));
+                subStack = new ArrayList<String>(interimStack.subList(0, interimStack.indexOf(sortedStack.get(i))+1));
+
+            System.out.println(subStack);
 
 //                System.out.println("substack before flipping "+subStack);
 
@@ -92,14 +94,13 @@ public class PancakeStack {
 
                 // bring the biggest pancake to the bottom
                 interimStack = flipStack(interimStack);
-                System.out.println(interimStack + "------");
 
-            }else {
+            //}else {
 
 
 
                 //flip the whole interim stack
-            }
+            //}
         }
 
     }
