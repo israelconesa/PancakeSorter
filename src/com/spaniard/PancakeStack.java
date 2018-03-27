@@ -46,41 +46,43 @@ public class PancakeStack {
         // Work your way from the bottom to the top of the stack
         for (int i = interimStack.size()-1; i>=0; i--) {
 
-            System.out.println("Current Index value : " +i);
+                System.out.println("Current Index value : " +i);
 
-            System.out.println("interim stack is now " +interimStack);
+                System.out.println("interim stack is now " +interimStack);
 
-            //identify a substack starting from the top and ending on the largest pancake
-            subStack = new ArrayList<String>(interimStack.subList(0, interimStack.indexOf(sortedStack.get(i))+1));
+                //identify a substack starting from the top and ending on the largest pancake
+                subStack = new ArrayList<String>(interimStack.subList(0, interimStack.indexOf(sortedStack.get(i))+1));
 
-            //create another substack from that point to the bottom of the pile
-            subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i))+1, interimStack.size()));
+                //create another substack from that point to the bottom of the pile
+                subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i))+1, interimStack.size()));
 
-            Collections.reverse(subStack);
-            subStack.addAll(subStack2);
+                Collections.reverse(subStack);
 
-            interimStack = new ArrayList<>(subStack);
+                //put together the stacks
+                subStack.addAll(subStack2);
 
-            System.out.println("Flip " + i + " is " + interimStack);
+                interimStack = new ArrayList<>(subStack);
 
-            //flip to bottom
-            //identify a substack starting from the bottom and ending on the largest pancake
-            subStack = new ArrayList<String>(interimStack.subList(0, i+1));
+                System.out.println("Flip " + i + " is " + interimStack);
 
-            //create another substack from that point to the bottom of the pile
-            subStack2 = new ArrayList<String>(interimStack.subList(i+1, interimStack.size()));
+                //flip to bottom
+                //identify a substack starting from the bottom and ending on the largest pancake
+                subStack = new ArrayList<String>(interimStack.subList(0, i+1));
 
-            Collections.reverse(subStack);
+                //create another substack from that point to the bottom of the pile
+                subStack2 = new ArrayList<String>(interimStack.subList(i+1, interimStack.size()));
 
-            subStack.addAll(subStack2);
+                Collections.reverse(subStack);
 
-            interimStack = new ArrayList<>(subStack);
+                //put together the stacks
+                subStack.addAll(subStack2);
 
-            System.out.println("Flip " + i + " is " + interimStack);
+                interimStack = new ArrayList<>(subStack);
 
-            System.out.println("------------------------------------");
+                System.out.println("Flip " + i + " is " + interimStack);
+
+                System.out.println("------------------------------------");
         }
-
     }
 
     public static void main(String[] args) {
@@ -91,7 +93,7 @@ public class PancakeStack {
         if (!pancakeStack.sortedStack.equals(pancakeStack.originalStack)) {
             pancakeStack.letTheFlippingBegin();
         }else {
-            System.out.println("Don't be cheeky, the pancake statck is already sorted");
+            System.out.println("Don't be cheeky, the pancake stack is already sorted");
         }
     }
 }
