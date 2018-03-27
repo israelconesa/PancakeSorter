@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-
 public class PancakeStack {
 
     private ArrayList<String> originalStack;
@@ -40,11 +39,6 @@ public class PancakeStack {
         return this.sortedStack;
     }
 
-    // Compare a stack with original stack for equality
-//    private boolean areStacksEqual(ArrayList<String> listToCompare) {
-//        return listToCompare.equals(originalStack);
-//    }
-
     public void letTheFlippingBegin() {
 
         interimStack = new ArrayList<>(getOriginalStack());
@@ -62,11 +56,6 @@ public class PancakeStack {
             //create another substack from that point to the bottom of the pile
             subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i))+1, interimStack.size()));
 
-            System.out.println(subStack);
-            System.out.println(subStack2);
-
-            //Collections.reverse(subStack);
-
             Collections.reverse(subStack);
             subStack.addAll(subStack2);
 
@@ -81,18 +70,11 @@ public class PancakeStack {
             //create another substack from that point to the bottom of the pile
             subStack2 = new ArrayList<String>(interimStack.subList(i+1, interimStack.size()));
 
-            System.out.println(subStack);
-            System.out.println(subStack2);
-
             Collections.reverse(subStack);
 
             subStack.addAll(subStack2);
 
             interimStack = new ArrayList<>(subStack);
-
-            //create another substack from that point to the top of the pile
-//            subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i))+1, interimStack.size()));
-
 
             System.out.println("Flip " + i + " is " + interimStack);
 
@@ -105,7 +87,11 @@ public class PancakeStack {
 
         PancakeStack pancakeStack = new PancakeStack();
 
-        pancakeStack.letTheFlippingBegin();
-
+        //Ensure that the original stack is not already ordered before start flipping pancakes
+        if (!pancakeStack.sortedStack.equals(pancakeStack.originalStack)) {
+            pancakeStack.letTheFlippingBegin();
+        }else {
+            System.out.println("Don't be cheeky, the pancake statck is already sorted");
+        }
     }
 }
