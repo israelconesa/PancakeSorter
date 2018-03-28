@@ -24,7 +24,7 @@ public class PancakeStack {
 
     /* Read the second line of text file to gather the original pancake stack and return it to the constructor */
     private ArrayList<String> getOriginalStack(){
-        File textFile = new File("/home/ilerma/Projects/PancakeSorter/src/myfile.txt");
+        File textFile = new File("/home/israelconesa/Development/PancakeSorter/src/myfile.txt");
         try {
             String line2 = Files.readAllLines(Paths.get(String.valueOf(textFile))).get(1);
             originalStack = new ArrayList<String>(Arrays.asList(line2.split(" ")));
@@ -47,23 +47,16 @@ public class PancakeStack {
 
         /* Work your way from the bottom to the top of the stack */
         for (int i = interimStack.size()-1; i>=0; i--) {
+            System.out.println(interimStack);
 
-            if (
-                !interimStack.get(i).equals(sortedStack.get(i))  // Ensure that largest pancake is NOT at the bottom already
-//                interimStack.indexOf(sortedStack.get(i)) != 0   // OR at the top
-
-//                interimStack.get(i).equals(sortedStack.get(i)) ||  // OR that largest pancake is NOT where it should be already
-//                interimStack.get(i).equals(interimStack.get(i-1)) // OR that current and next pancake are NOT the same size already
+            if ( //pancake under test is NOT at the bottom of the interim stack
+                !interimStack.get(i).equals(sortedStack.get(i))
              ) {
-                System.out.println(interimStack.get(i));
-                System.out.println(sortedStack.get(i));
-                System.out.println(!interimStack.get(i).equals(sortedStack.get(i)));
-
                 /* identify a substack starting from the top and ending on the largest pancake */
-                subStack = new ArrayList<String>(interimStack.subList(0, interimStack.indexOf(sortedStack.get(i)) + 1));
+                subStack = new ArrayList<String>(interimStack.subList(0, interimStack.lastIndexOf(sortedStack.get(i)) + 1));
 
                 /* create another substack from that point to the bottom of the pile */
-                subStack2 = new ArrayList<String>(interimStack.subList(interimStack.indexOf(sortedStack.get(i)) + 1, interimStack.size()));
+                subStack2 = new ArrayList<String>(interimStack.subList(interimStack.lastIndexOf(sortedStack.get(i)) + 1, interimStack.size()));
 
                 Collections.reverse(subStack);
 
@@ -98,6 +91,8 @@ public class PancakeStack {
                 if (sortedStack.equals(interimStack)) break;
 //            }
             } else {
+                /* Pancake under test is already at the bottom of the interim
+                stack so start the iteration again to find next one to go over */
                 interimStack = new ArrayList<>(interimStack);
             }
 
