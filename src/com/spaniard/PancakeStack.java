@@ -69,15 +69,22 @@ public class PancakeStack {
                  * If it is, flip it internally to bring it to the bottom */
                 if (!interimStack.get(0).equals(sortedStackNumbers.get(i))) {
 
+                    System.out.println(interimStack);
+
                     /* Identify a substack starting from the top and ending on the largest pancake.
                      * Largest is identifiable by its position on the sorted stack */
-                    subStack = new ArrayList<>(interimStack.subList(0, (interimStack.lastIndexOf(sortedStackNumbers.get(i)) + 1)));
+                    subStack = new ArrayList<>(interimStack.subList(0, interimStack.lastIndexOf(sortedStackNumbers.get(i))+1));
                     Collections.reverse(subStack);
 
-                    System.out.println(subStack);
 
-                    for (int j = 0; j <= interimStack.lastIndexOf(sortedStackNumbers.get(i)); j++) {
+/*                    System.out.println(subStack);*/
 
+                    System.out.println(interimStack.lastIndexOf(sortedStackNumbers.get(i))+1);
+                    System.out.println(sortedStackNumbers.get(i));
+
+                    for (int j = 0; j < subStack.size(); j++) {
+
+//                        System.out.println("index is : " + j + " and value is " + subStack.get(j));
                         interimStack.set(j, subStack.get(j));
                     }
 
@@ -92,11 +99,15 @@ public class PancakeStack {
                     * would break the sorting :)*/
                     if (sortedStackNumbers.equals(interimStack)) break;
 
+                    /* New substack that assumes that the largest pancake is already at the top */
                     subStack2 = new ArrayList<>(interimStack.subList(0, i + 1));
                     Collections.reverse(subStack2);
 
-                    for (int j = 0; j <= i ; j++) {
+//                    System.out.println(subStack2);
 
+                    for (int j = 0; j < subStack2.size() ; j++) {
+
+//                        System.out.println("index is : " + j + " and value is " + subStack2.get(j));
                         interimStack.set(j, subStack2.get(j));
 
                     }
