@@ -118,9 +118,7 @@ public class PancakeStack {
                     Collections.reverse(subStack2);
 
                     for (int j = 0; j <= i ; j++) {
-
                         interimStack.set(j, subStack2.get(j));
-
                     }
 
                     flipCounter = flipCounter + 1;
@@ -139,8 +137,8 @@ public class PancakeStack {
 
         PancakeStack pancakeStack = new PancakeStack();
 
-        System.out.println(pancakeStack.originalStackNumbers);
-        System.out.println(pancakeStack.sortedStackNumbers);
+        System.out.println("The original stack is : " + pancakeStack.originalStackNumbers);
+        System.out.println("The sorted stack is : " + pancakeStack.sortedStackNumbers);
         System.out.println("------------------------------");
 
         /* Ensure that the original stack is not already ordered before start flipping pancakes */
