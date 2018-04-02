@@ -1,5 +1,5 @@
-This is a partial solution for the pancake sorting problem. It reads pancakes sizes in order from file but
-the file is hardcoded.
+This is a partial solution for the pancake sorting problem. It reads pancakes sizes in order \n
+from file but the file is hardcoded.
 
 Currently, it only accounts for pancakes which have NO burn sides, i.e. negative sizes.
 
