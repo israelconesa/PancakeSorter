@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 public class PancakeStack {
 
     private ArrayList<String> originalStack;
@@ -45,6 +47,11 @@ public class PancakeStack {
     /* Sort stack to learn the solution */
     private ArrayList<Integer> sortStackNumbers(){
         sortedStackNumbers = new ArrayList<>(originalStackNumbers);
+        /* The sorted stack has no burnt pancakes facing upwards, i.e. negative numbers.
+         * So I must get the absolute values before sorting */
+        for (int i = 0; i < sortedStackNumbers.size(); i++){
+            sortedStackNumbers.set(i, abs(sortedStackNumbers.get(i)));
+        }
         Collections.sort(sortedStackNumbers);
         return this.sortedStackNumbers;
     }
@@ -105,7 +112,7 @@ public class PancakeStack {
                     /* This is how the whole stack looks like now after bringing the largest pancake AT THE BOTTOM
                      * and on top of previous largest pancake (if any) */
                     System.out.println("Flip " + flipCounter + " is " + interimStack);
-                    
+
                     if (sortedStackNumbers.equals(interimStack)) break;
 
                 } else {
