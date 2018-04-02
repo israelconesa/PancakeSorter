@@ -64,7 +64,7 @@ public class PancakeStack {
             if (!interimStack.get(i).equals(sortedStackNumbers.get(i))) {
 
                 /* Pancake under test is NOT at the TOP of the interim stack.
-                 * If it is, flip it internally to bring it to the bottom */
+                 * If it is, flip it internally to bring it to the top */
                 if (!interimStack.get(0).equals(sortedStackNumbers.get(i))) {
 
                     /* Identify a substack starting from the top and ending on current index (inclusive) */
@@ -105,27 +105,24 @@ public class PancakeStack {
                     /* This is how the whole stack looks like now after bringing the largest pancake AT THE BOTTOM
                      * and on top of previous largest pancake (if any) */
                     System.out.println("Flip " + flipCounter + " is " + interimStack);
-
-                    /* Break the loop if the right sorting has been achieved
-                     * by comparing with the solution */
+                    
                     if (sortedStackNumbers.equals(interimStack)) break;
 
                 } else {
 
-                    /* This substack assumes that the largest pancake under test is at the top of the stack*/
+                    /* This substack assumes that the largest pancake under test is at the top of the stack already.
+                    * It only requires flipping to the bottom and on top of previous largest pancake. */
                     subStack2 = new ArrayList<>(interimStack.subList(0, i + 1));
 
                     Collections.reverse(subStack2);
 
-                    for (int j = 0; j <= i ; j++) {
+                    for (int j = 0; j < subStack2.size() ; j++) {
                         interimStack.set(j, subStack2.get(j));
                     }
 
                     flipCounter = flipCounter + 1;
                     System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-                    /* Break the loop if the right sorting has been achieved
-                    * by comparing with the solution */
                     if (sortedStackNumbers.equals(interimStack)) break;
                 }
             }
