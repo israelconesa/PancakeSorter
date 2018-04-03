@@ -108,7 +108,7 @@ public class PancakeStack {
             */
             if (!interimStack.get(i).equals(sortedStackNumbers.get(i))) {
 
-                /* Pancake under test is NOT the burnt version of the equivalent on the sorted stack.
+                /* Pancake under test is NOT the burnt version of its match on the sorted stack.
                  * If it is, it must be flipped to the top, flipped over (burnt face up) and back
                  * to the bottom of the stack (burnt face down) */
                 if (abs(interimStack.get(i)) != sortedStackNumbers.get(i)) {
@@ -120,23 +120,26 @@ public class PancakeStack {
                         /* Identify a substack starting from the top and ending on current index (inclusive) */
                         subStack = new ArrayList<>(interimStack.subList(0, i + 1));
 
-                        System.out.println(subStack);
-
-                        Integer tellme = subStack.lastIndexOf(sortedStackNumbers.get(i));
+//                        System.out.println(subStack);
 
                         /* Trim further this substack to find the index of the LAST largest pancake, in case that there
-                         * are duplicates. Largest is defined by its position in the sorted stack on current iteration.*/
+                         * are duplicates. Largest is defined by its position in the sorted stack.
+                         * If the trimmed substack is empty that means that the pancake which I'm after cannot be found,
+                         * i.e. it is negative in size (has a burnt side facing up */
+
                         subStack2 = new ArrayList<>(subStack.subList(0, subStack.lastIndexOf(sortedStackNumbers.get(i)) + 1));
+
+                        if (subStack2.isEmpty()) {
+                            int negativeVersion2 = sortedStackNumbers.get(i)*(-1);
+
+                            subStack2 = new ArrayList<>(subStack.subList(0, subStack.lastIndexOf(negativeVersion2) + 1));
+
+                        }
 
                         subStackBurntStatus = new ArrayList<>(burntStatuses.subList(0, subStack2.size()));
 
                         Collections.reverse(subStack2);
                         Collections.reverse(subStackBurntStatus);
-
-                        System.out.println(subStack2);
-                        System.out.println(subStackBurntStatus);
-                        System.out.println(sortedStackNumbers.get(i));
-                        System.out.println(subStack.lastIndexOf(sortedStackNumbers.get(i)));
 
                         /* Update the interim stack once the substack has been flipped internally */
                         for (int j = 0; j < subStack2.size(); j++) {
@@ -164,9 +167,23 @@ public class PancakeStack {
                          * may break the sorting :)*/
                         if (sortedStackNumbers.equals(interimStack)) break;
 
+
+                        if (burntStatuses.get(0) == 2) {
+                            interimStack.set(0, subStack2.get(0));
+                            burntStatuses.set(0, -1);
+
+//                            System.out.println(subStack);
+
+                            flipCounter = flipCounter + 1;
+
+                            System.out.println("Flip " + flipCounter + " is >>>>>>" + interimStack);
+                            System.out.println("Burn status are now : " + burntStatuses);
+                        }
+
+
                         /* New substack that assumes that the largest pancake is already at the top */
                         subStack = new ArrayList<>(interimStack.subList(0, i + 1));
-                        subStackBurntStatus = new ArrayList<>(burntStatuses.subList(0, i + 1));
+                        subStackBurntStatus = new ArrayList<>(subStack.size());
 
                         Collections.reverse(subStack);
                         Collections.reverse(subStackBurntStatus);
