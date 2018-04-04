@@ -34,7 +34,7 @@ public class PancakeStack {
      * the sorting with strings would not provide the required results.
     */
     private ArrayList<Integer> getOriginalStackNumbers() throws Exception {
-        File textFile = new File("/home/israelconesa/Development/PancakeSorter/src/myfile.txt");
+        File textFile = new File("/home/ilerma/Projects/PancakeSorter/src/myfile.txt");
         try {
             String line2 = Files.readAllLines(Paths.get(String.valueOf(textFile))).get(1);
             originalStack = new ArrayList<>(Arrays.asList(line2.split(" ")));
@@ -93,14 +93,8 @@ public class PancakeStack {
         int flipCounter = 0;
 
         /* The interim stack begins as a copy of the original and is updated as pancakes are rearranged by size.
-         * Its size drives the number of iterations through the stack starting from the bottom.*/
+         * The size of the original stack drives the number of iterations through the stack starting from the bottom.*/
         for (int i = interimStack.size() - 1; i >= 0; i--) {
-
-//            System.out.println("----------------------------------------");
-//            System.out.println("INDEX IS NOW : " + i);
-//            System.out.println(interimStack);
-//            System.out.println(interimStack.get(i));
-//            System.out.println(sortedStackNumbers.get(i));
 
             /*
              * Pancake under test is NOT at the bottom of the interim stack.
@@ -108,32 +102,31 @@ public class PancakeStack {
             */
             if (!interimStack.get(i).equals(sortedStackNumbers.get(i))) {
 
-                /* Pancake under test is NOT the burnt version of its match on the sorted stack.
+                /* Pancake under test is NOT the burnt version of the pancake at the same position
+                 * on the sorted stack.
                  * If it is, it must be flipped to the top, flipped over (burnt face up) and back
-                 * to the bottom of the stack (burnt face down) */
+                 * to the bottom of the stack (burnt face down) - out of this if statement
+                 */
                 if (abs(interimStack.get(i)) != sortedStackNumbers.get(i)) {
 
                     /* Pancake under test is NOT at the TOP of the interim stack.
-                     * If it is, flip it internally to bring it to the top */
+                     * If it is, flip it internally to bring it to the top - out of this if statement */
                     if (abs(interimStack.get(0)) != sortedStackNumbers.get(i)) {
 
                         /* Identify a substack starting from the top and ending on current index (inclusive) */
                         subStack = new ArrayList<>(interimStack.subList(0, i + 1));
 
-//                        System.out.println(subStack);
-
                         /* Trim further this substack to find the index of the LAST largest pancake, in case that there
-                         * are duplicates. Largest is defined by its position in the sorted stack.
-                         * If the trimmed substack is empty that means that the pancake which I'm after cannot be found,
-                         * i.e. it is negative in size (has a burnt side facing up) */
+                         * are duplicates. Largest is defined by its position in the sorted stack. */
 
                         subStack2 = new ArrayList<>(subStack.subList(0, subStack.lastIndexOf(sortedStackNumbers.get(i)) + 1));
 
+                        /* If the trimmed substack is empty that means that the pancake which I'm after cannot be found,
+                         * i.e. it is negative in size (has a burnt side facing up).
+                         * I have to search for it using its unburnt version, i.e. make positive in size.*/
                         if (subStack2.isEmpty()) {
-                            int negativeVersion2 = sortedStackNumbers.get(i)*(-1);
-
-                            subStack2 = new ArrayList<>(subStack.subList(0, subStack.lastIndexOf(negativeVersion2) + 1));
-
+                            int unburntVersion = sortedStackNumbers.get(i)*(-1);
+                            subStack2 = new ArrayList<>(subStack.subList(0, subStack.lastIndexOf(unburntVersion) + 1));
                         }
 
                         subStackBurntStatus = new ArrayList<>(burntStatuses.subList(0, subStack2.size()));
@@ -156,11 +149,9 @@ public class PancakeStack {
                         }
 
                         flipCounter = flipCounter + 1;
+                        System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-                        /* This is how the whole stack looks like now after bringing the largest pancake AT THE TOP */
-                        System.out.println("Flip " + flipCounter + " is ******" + interimStack);
-
-//                        System.out.println("Burn status are now : " + burntStatuses);
+//                        System.out.println("Burn statuses are now : " + burntStatuses);
 
                         /* Break the loop if the right sorting has been achieved by comparing with the solution.
                          * I do it here as I want to break as early as possible to make it faster... and carrying on
@@ -168,16 +159,14 @@ public class PancakeStack {
                         if (sortedStackNumbers.equals(interimStack)) break;
 
 
+                        /* Flip just the top pancake to have the burnt side up ONLY if it is burnt in the first place */
                         if (burntStatuses.get(0) == 2) {
                             interimStack.set(0, subStack2.get(0));
                             burntStatuses.set(0, -1);
 
-//                            System.out.println(subStack);
-
                             flipCounter = flipCounter + 1;
-
-                            System.out.println("Flip " + flipCounter + " is >>>>>>" + interimStack);
-//                            System.out.println("Burn status are now : " + burntStatuses);
+                            System.out.println("Flip " + flipCounter + " is " + interimStack);
+//                            System.out.println("Burn statuses are now : " + burntStatuses);
                         }
 
 
@@ -188,15 +177,12 @@ public class PancakeStack {
                         Collections.reverse(subStack);
                         Collections.reverse(subStackBurntStatus);
 
-//                        System.out.println(subStack);
-//                        System.out.println(subStackBurntStatus);
-
                         for (int j = 0; j < subStack.size(); j++) {
                             if (subStackBurntStatus.get(j) < 0) {
-                                interimStack.set(j, subStack.get(j));
+                                interimStack.set(j, subStack.get(j)*(-1));
                                 burntStatuses.set(j, 2);
                             }else if (subStackBurntStatus.get(j) == 2){
-                                interimStack.set(j, subStack.get(j));
+                                interimStack.set(j, subStack.get(j)*(-1));
                                 burntStatuses.set(j, -1);
                             }else {
                                 interimStack.set(j, subStack.get(j));
@@ -205,16 +191,16 @@ public class PancakeStack {
                         }
 
                         flipCounter = flipCounter + 1;
-                        System.out.println("Flip " + flipCounter + " is ++++++" + interimStack);
+                        System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-//                        System.out.println("Burn status are now : " + burntStatuses);
+//                        System.out.println("Burn statuses are now : " + burntStatuses);
 
                         if (sortedStackNumbers.equals(interimStack)) break;
 
                     } else {
 
                         /* This substack assumes that the largest pancake under test is at the top of the stack already.
-                         * It only requires flipping to the bottom and on top of previous largest pancake.
+                         * It only requires flipping to the bottom but on top of previous largest pancake.
                          *
                          * E.g. [-4, 1, 2, 3, 5] becomes [3, 2, 1, 4, 5]
                          */
@@ -224,15 +210,12 @@ public class PancakeStack {
                         Collections.reverse(subStack);
                         Collections.reverse(subStackBurntStatus);
 
-//                        System.out.println(subStack);
-//                        System.out.println(subStackBurntStatus);
-
                         for (int j = 0; j < subStack.size(); j++) {
                             if (subStackBurntStatus.get(j) < 0) {
                                 interimStack.set(j, subStack.get(j)*(-1));
                                 burntStatuses.set(j, 2);
                             }else if (subStackBurntStatus.get(j) == 2){
-                                interimStack.set(j, subStack.get(j));
+                                interimStack.set(j, subStack.get(j)*(-1));
                                 burntStatuses.set(j, -1);
                             }else {
                                 interimStack.set(j, subStack.get(j));
@@ -241,9 +224,9 @@ public class PancakeStack {
                         }
 
                         flipCounter = flipCounter + 1;
-                        System.out.println("Flip " + flipCounter + " is ------" + interimStack);
+                        System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-//                        System.out.println("Burn status are now : " + burntStatuses);
+//                        System.out.println("Burn statuses are now : " + burntStatuses);
 
                         if (sortedStackNumbers.equals(interimStack)) break;
                     }
@@ -270,11 +253,10 @@ public class PancakeStack {
                         }
                     }
 
-//                    System.out.println("Burn status are now : " + burntStatuses);
-
                     flipCounter = flipCounter + 1;
+                    System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-                    System.out.println("Flip " + flipCounter + " is 1^^^^^" + interimStack);
+//                    System.out.println("Burn statuses are now : " + burntStatuses);
 
                     if (sortedStackNumbers.equals(interimStack)) break;
 
@@ -287,12 +269,10 @@ public class PancakeStack {
                     interimStack.set(0, subStack.get(0));
                     burntStatuses.set(0, -1);
 
-//                    System.out.println("Burn status are now : " + burntStatuses);
-//                    System.out.println(subStack);
-
                     flipCounter = flipCounter + 1;
+                    System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-                    System.out.println("Flip " + flipCounter + " is 2^^^^^" + interimStack);
+//                    System.out.println("Burn statuses are now : " + burntStatuses);
 
                     if (sortedStackNumbers.equals(interimStack)) break;
 
@@ -308,9 +288,6 @@ public class PancakeStack {
                     Collections.reverse(subStack);
                     Collections.reverse(subStackBurntStatus);
 
-//                    System.out.println(subStack);
-//                    System.out.println(subStackBurntStatus);
-
                     for (int j = 0; j < subStack.size(); j++) {
                         if (subStackBurntStatus.get(j) < 0) {
                             interimStack.set(j, subStack.get(j)*(-1));
@@ -325,10 +302,9 @@ public class PancakeStack {
                     }
 
                     flipCounter = flipCounter + 1;
+                    System.out.println("Flip " + flipCounter + " is " + interimStack);
 
-//                    System.out.println("Burn status are now : " + burntStatuses);
-
-                    System.out.println("Flip " + flipCounter + " is 3^^^^^" + interimStack);
+//                    System.out.println("Burn statuses are now : " + burntStatuses);
 
                     if (sortedStackNumbers.equals(interimStack)) break;
                 }

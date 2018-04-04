@@ -1,0 +1,15 @@
+Dear Priyesh,
+
+This is my solution to the pancake flipping paradigm :)
+
+Unlike the master branch, it deals with burn pancakes (negative numbers). I worked with
+the requirement that ONLY the burnt pancakes at the beginning had to be dealt with, i.e.
+force them to have the burnt side down.
+
+It reads pancakes sizes in order from file but the file itself is hardcoded. I don't have
+any energy left to put it as a system property.
+
+The file has some scenarios that I found useful for testing.
+
+I'd love to have your feedback. I know it could do with a bit of refactoring but, again,
+no energy left. :)
