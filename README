@@ -1,7 +1,9 @@
-This is a partial solution for the pancake sorting problem. It reads pancakes sizes in order \n
+Dear Priyesh,
+
+This is a partial solution for the pancake sorting problem. It reads pancakes sizes in order
 from file but the file is hardcoded.
 
 Currently, it only accounts for pancakes which have NO burn sides, i.e. negative sizes.
 
-I'm working on a solution for that on a different branch
+There is a solution on a separate branch for those pancakes that have burnt sides
 https://github.com/israelconesa/PancakeSorter/tree/BurntPancakeStack
